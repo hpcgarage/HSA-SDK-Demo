@@ -1,0 +1,21 @@
+version 0:96:$full:$large;
+kernel &hsaDemo(kernarg_u64 %xArray, kernarg_u64 %yArray, kernarg_u64 %zArray, kernarg_u64 %length) {
+	workitemabsid_u32 $s0, 0;
+	cvt_u64_u32 $d4, $s0;
+	ld_kernarg_u64 $d3, [%length];
+	cmp_ge_b1_u64 $c0, $d4, $d3;
+	cbr $c0, @return;
+	ld_kernarg_u64 $d0, [%xArray];
+	ld_kernarg_u64 $d1, [%yArray];
+	ld_kernarg_u64 $d2, [%zArray];
+	shl_u64 $d4, $d4, 2;
+	add_u64 $d0, $d0, $d4;
+	add_u64 $d1, $d1, $d4;
+	add_u64 $d2, $d2, $d4;
+	ld_u32 $s0, [$d0];
+	ld_u32 $s1, [$d1];
+	add_u32 $s0, $s0, $s1;
+	st_u32 $s0, [$d2];
+@return:
+	ret;
+};
